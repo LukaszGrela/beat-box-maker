@@ -1,5 +1,5 @@
 import React from 'react';
-import { start as toneStart } from 'tone';
+import { start as toneStart, context as toneContext } from 'tone';
 import './App.css';
 import { useMount } from './hooks/useMount';
 
@@ -33,6 +33,7 @@ const App: React.FC = (): JSX.Element => {
               className='tap-to-start'
               onClick={async () => {
                 await toneStart();
+                toneContext.resume();
                 setInitiated(true);
               }}
             >
