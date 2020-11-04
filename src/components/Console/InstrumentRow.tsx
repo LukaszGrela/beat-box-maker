@@ -1,5 +1,5 @@
-import React from "react";
-import { ListChildComponentProps } from "react-window";
+import React from 'react';
+import { ListChildComponentProps } from 'react-window';
 
 export interface IProps extends ListChildComponentProps {
   label: string;
@@ -18,11 +18,13 @@ const InstrumentRow: React.FC<IProps> = ({
     if (className) {
       return `InstrumentRow ${className}`;
     }
-    return "InstrumentRow";
+    return 'InstrumentRow';
   }, [className]);
   return (
     <div className={memoClassName} style={style}>
-      {label}
+      <span className="InstrumentRow_icon"></span>
+      <span className="InstrumentRow_label">{label}</span>
+      <span className="InstrumentRow_toolbox"></span>
     </div>
   );
 };
