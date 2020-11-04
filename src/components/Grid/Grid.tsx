@@ -1,9 +1,9 @@
-import React from 'react';
-import { LinearGradient } from '@visx/gradient';
-import { ParentSize } from '@visx/responsive';
-import { Grid as VisxGrid } from '@visx/grid';
-import { background, background2 } from '../../config';
-import { scaleLinear } from '@visx/scale';
+import React from "react";
+import { LinearGradient } from "@visx/gradient";
+import { ParentSize } from "@visx/responsive";
+import { Grid as VisxGrid } from "@visx/grid";
+import { background, background2 } from "../../config";
+import { scaleLinear } from "@visx/scale";
 
 export interface IProps {
   bgGradient?: string[];
@@ -47,11 +47,11 @@ const Grid: React.FC<IProps> = ({
               y={0}
               width={width}
               height={height}
-              fill='url(#area-background-gradient)'
+              fill="url(#area-background-gradient)"
               rx={14}
             />
             <LinearGradient
-              id='area-background-gradient'
+              id="area-background-gradient"
               from={background}
               to={background2}
             />
@@ -63,6 +63,18 @@ const Grid: React.FC<IProps> = ({
               numTicksRows={6}
               numTicksColumns={columns}
             />
+{/*             <GridColumns
+              scale={gridScale}
+              width={tileWidth * columns}
+              height={height}
+              numTicks={columns}
+            />
+            <GridRows
+              scale={rowScale}
+              width={tileWidth * columns}
+              height={height}
+              numTicks={6}
+            /> */}
           </svg>
         );
       }}
