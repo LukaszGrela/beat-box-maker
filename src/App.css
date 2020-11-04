@@ -42,6 +42,13 @@ html {
   color: #61dafb;
 }
 
+
+.beats {
+  width: calc(100vw - 2rem);
+  height: calc(80vh - 2rem);
+  padding: 1rem;
+}
+
 .tap-to-start {
   background: #000a;
   border: 1rem #fffc solid;
