@@ -1,0 +1,6 @@
+.Tile {
+  border: 1px silver solid;
+  &.selected {
+    background-color: #f10a;
+  }
+}

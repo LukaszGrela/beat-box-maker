@@ -1,0 +1,19 @@
+.Console {
+  position: relative;
+  width: 100%;
+  height: 100%;
+
+  background-color: #000a;
+  color: #fff;
+  display: flex;
+
+  &_instruments {
+    max-width: 12rem;
+    min-width: 2rem;
+    flex-grow: 1;
+  }
+
+  &_beats {
+    flex-grow: 6;
+  }
+}

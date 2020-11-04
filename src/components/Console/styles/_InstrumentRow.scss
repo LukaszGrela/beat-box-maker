@@ -1,0 +1,9 @@
+.InstrumentRow {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  &_label {
+    font-weight: 600;
+    font-size: 2rem;
+  }
+}
