@@ -1,7 +1,5 @@
-# Drum Kit
-JS30 Code Challange, create a drum kit. I've chosen React and Tone JS.
-
-[Live example](http://js30.greladesign.co/01/)
+# Beat Box Maker
+Beat box app
 
 ## Bootstrapped with
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
