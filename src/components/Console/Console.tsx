@@ -1,15 +1,16 @@
-import React from "react";
-import { IInstrumentData } from "../../Instruments/Instruments";
+import React from 'react';
+import { IInstrumentData } from '../../Instruments/Instruments';
 import {
   FixedSizeGrid,
   FixedSizeList,
   GridChildComponentProps,
   ListChildComponentProps,
-} from "react-window";
-import AutoSizer from "react-virtualized-auto-sizer";
-import InstrumentRow from "./InstrumentRow";
+} from 'react-window';
+import AutoSizer from 'react-virtualized-auto-sizer';
+import InstrumentRow from './InstrumentRow';
 
-import "./styles/index.scss";
+import './styles/index.scss';
+import Tile from './Tile';
 
 export interface IProps {
   instruments: IInstrumentData[];
@@ -29,7 +30,7 @@ const renderInstrument = (
   props: ListChildComponentProps
 ): JSX.Element => (
   <InstrumentRow
-    className={props.index % 2 === 0 ? "even" : "odd"}
+    className={props.index % 2 === 0 ? 'even' : 'odd'}
     {...props}
     label={data[props.index].label}
   />
@@ -37,14 +38,14 @@ const renderInstrument = (
 
 const renderBeat = (
   data: number[][]
-): ((props: GridChildComponentProps) => JSX.Element) => ({
-  columnIndex,
-  rowIndex,
-  style,
-}: GridChildComponentProps): JSX.Element => (
-  <div className={rowIndex % 2 === 0 ? "even" : "odd"} style={style}>
-    Item {rowIndex},{columnIndex}
-  </div>
+): ((props: GridChildComponentProps) => JSX.Element) => (
+  props: GridChildComponentProps
+): JSX.Element => (
+  <Tile
+    className={props.rowIndex % 2 === 0 ? 'even' : 'odd'}
+    {...props}
+    selected={data[props.rowIndex][props.columnIndex]}
+  />
 );
 
 const Console: React.FC<IProps> = ({
