@@ -1,11 +1,12 @@
 import React from 'react';
 import { start as toneStart, context as toneContext } from 'tone';
 import './App.css';
+import Grid from './components/Grid/Grid';
 import { useMount } from './hooks/useMount';
 
 const App: React.FC = (): JSX.Element => {
   const [initiated, setInitiated] = React.useState(false);
-  const [loading, setLoading] = React.useState(true);
+  const [loading, setLoading] = React.useState(false);
 
   // const downHandler = (e: KeyboardEvent): void => {  };
   // const upHandler = (e: KeyboardEvent): void => {};
@@ -25,9 +26,9 @@ const App: React.FC = (): JSX.Element => {
       </header>
 
       <section className='App-section'>
-        <div className='keys'>
+        <div className='beats'>
           {loading && <p>LOADING...</p>}
-          
+          {!loading && initiated && <Grid />}
           {!loading && !initiated && (
             <button
               className='tap-to-start'
