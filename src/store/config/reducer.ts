@@ -1,9 +1,9 @@
 import { ConfigActionTypes, IConfigAction, IConfigReducer } from './types';
 
 const initialState: IConfigReducer = {
-  bars: 4,
-  beatsPerBar: 4,
-  splitBeat: 2,
+  bars: 1,
+  beatsPerBar: 1,
+  splitBeat: 1,
 };
 
 const config = (
@@ -11,10 +11,15 @@ const config = (
   action: IConfigAction
 ): IConfigReducer => {
   switch (action.type) {
-    case ConfigActionTypes.RESET:
+    case ConfigActionTypes.RESET: {
+      const { bars, beatsPerBar, splitBeat } = action;
       return {
         ...initialState,
+        bars,
+        beatsPerBar,
+        splitBeat,
       };
+    }
 
     default:
       return state;

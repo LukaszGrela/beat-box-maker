@@ -7,6 +7,10 @@ export enum ConfigActionTypes {
 
 export interface IConfigAction extends AnyAction {
   type: ConfigActionTypes;
+
+  bars: number;
+  beatsPerBar: number;
+  splitBeat: number;
 }
 
 export interface IConfigReducer {
