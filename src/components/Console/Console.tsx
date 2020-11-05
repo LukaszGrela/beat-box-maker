@@ -1,5 +1,6 @@
 import React from 'react';
 import { IInstrumentData } from '../../Instruments/Instruments';
+import { arrayHasContent } from '../../shared/types';
 import InstrumentRow from './InstrumentRow';
 
 import './styles/index.scss';
@@ -90,23 +91,26 @@ const Console: React.FC<IProps> = ({
             gridTemplateColumns,
           }}
         >
-          {beats
-            .reduce((acc, current) => [...acc, ...current], [])
-            .map(
-              (item, index): React.ReactNode => {
-                const x = index % columns;
-                const y = Math.floor(index / columns);
-                const id = `Tile-${instruments[y].label}-${x}-${y}-${instruments[y].id}`;
-                return (
-                  <Tile
-                    key={id}
-                    id={id}
-                    className={y % 2 === 0 ? 'even' : 'odd'}
-                    selected={item}
-                  />
-                );
-              }
-            )}
+          {arrayHasContent(beats) &&
+            arrayHasContent(instruments) &&
+            beats
+              .reduce((acc, current) => [...acc, ...current], [])
+              .map(
+                (item, index): React.ReactNode => {
+                  const x = index % columns;
+                  const y = Math.floor(index / columns);
+
+                  const id = `Tile-${instruments[y].label}-${x}-${y}-${instruments[y].id}`;
+                  return (
+                    <Tile
+                      key={id}
+                      id={id}
+                      className={y % 2 === 0 ? 'even' : 'odd'}
+                      selected={item}
+                    />
+                  );
+                }
+              )}
         </div>
       </div>
     </div>
