@@ -10,6 +10,14 @@ const App: React.FC = (): JSX.Element => {
   const [loading, setLoading] = React.useState(false);
   const players = React.useRef<Instruments>(new Instruments());
 
+  React.useEffect((): void => {
+    if (initiated) {
+      players.current.load((): void => {
+        setLoading(false);
+      });
+    }
+  }, [initiated, players]);
+
   // const downHandler = (e: KeyboardEvent): void => {  };
   // const upHandler = (e: KeyboardEvent): void => {};
   useMount((): (() => void) => {
@@ -31,7 +39,13 @@ const App: React.FC = (): JSX.Element => {
         <div className="beats">
           {loading && <p>LOADING...</p>}
           {!loading && initiated && (
-            <ConsoleConnected instruments={players.current.instruments} />
+            <ConsoleConnected
+              instruments={players.current.instruments}
+              playInstrument={(instrument: string): void => {
+                console.log('App.playInstrument', instrument);
+                players.current.play(instrument);
+              }}
+            />
           )}
           {!loading && !initiated && (
             <button
