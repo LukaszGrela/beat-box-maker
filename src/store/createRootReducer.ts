@@ -7,14 +7,14 @@ import {
 } from 'connected-react-router';
 import { IConfigAction, IConfigReducer } from './config/types';
 import config from './config/reducer';
-import { IBeatsAction, IBeatsReducer } from './beats/types';
+import { TBeatsActions, IBeatsReducer } from './beats/types';
 import beats from './beats/reducer';
 
 export type TAction =
   | AnyAction
   | LocationChangeAction
   | IConfigAction
-  | IBeatsAction;
+  | TBeatsActions;
 
 export type TStateObject = {
   beats: IBeatsReducer;
