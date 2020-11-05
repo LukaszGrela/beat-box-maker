@@ -1,12 +1,5 @@
 import React from 'react';
 import { IInstrumentData } from '../../Instruments/Instruments';
-import {
-  FixedSizeGrid,
-  FixedSizeList,
-  GridChildComponentProps,
-  ListChildComponentProps,
-} from 'react-window';
-import AutoSizer from 'react-virtualized-auto-sizer';
 import InstrumentRow from './InstrumentRow';
 
 import './styles/index.scss';
@@ -24,38 +17,12 @@ export interface IProps {
   rowHeight?: number;
 }
 
-const renderInstrument = (
-  data: IInstrumentData[]
-): ((props: ListChildComponentProps) => JSX.Element) => (
-  props: ListChildComponentProps
-): JSX.Element => (
-  <InstrumentRow
-    className={props.index % 2 === 0 ? 'even' : 'odd'}
-    {...props}
-    label={data[props.index].label}
-  />
-);
-
-const renderBeat = (
-  data: number[][]
-): ((props: GridChildComponentProps) => JSX.Element) => (
-  props: GridChildComponentProps
-): JSX.Element => (
-  <Tile
-    className={props.rowIndex % 2 === 0 ? 'even' : 'odd'}
-    {...props}
-    selected={data[props.rowIndex][props.columnIndex]}
-  />
-);
-
 const Console: React.FC<IProps> = ({
   instruments,
   beats,
-  rowHeight = 48,
   bars = 4,
   beatsPerBar = 4,
   splitBeat = 2,
-  tileWidth = 40,
 }: IProps): JSX.Element => {
   const columns = React.useMemo((): number => bars * beatsPerBar * splitBeat, [
     bars,
@@ -63,39 +30,49 @@ const Console: React.FC<IProps> = ({
     splitBeat,
   ]);
   const rows = React.useMemo((): number => instruments.length, [instruments]);
+  const gridTemplateRows = React.useMemo(
+    (): string => `repeat(${rows}, 4rem)`,
+    [rows]
+  );
+  const gridTemplateColumns = React.useMemo(
+    (): string => `repeat(${columns}, 6rem)`,
+    [columns]
+  );
   return (
     <div className="Console">
-      <div className="Console_instruments">
-        <AutoSizer>
-          {({ width, height }) => (
-            <FixedSizeList
-              className="Console_instruments_list"
-              itemCount={rows}
-              itemSize={rowHeight}
-              width={width}
-              height={height}
-            >
-              {renderInstrument(instruments)}
-            </FixedSizeList>
-          )}
-        </AutoSizer>
-      </div>
+      <ul className="Console_instruments">
+        {instruments.map(
+          (data, index): React.ReactNode => (
+            <InstrumentRow
+              key={`${data.label}-${index}`}
+              className={index % 2 === 0 ? 'even' : 'odd'}
+              label={data.label}
+            />
+          )
+        )}
+      </ul>
       <div className="Console_beats">
-        <AutoSizer>
-          {({ width, height }) => (
-            <FixedSizeGrid
-              className="Console_beats_grid"
-              width={width}
-              height={height}
-              columnCount={columns}
-              rowCount={rows}
-              rowHeight={rowHeight}
-              columnWidth={tileWidth}
-            >
-              {renderBeat(beats)}
-            </FixedSizeGrid>
-          )}
-        </AutoSizer>
+        <div
+          className="Console_beats_grid"
+          style={{
+            gridTemplateRows,
+            gridTemplateColumns,
+          }}
+        >
+          {beats
+            .reduce((acc, current) => [...acc, ...current], [])
+            .map(
+              (item, index): React.ReactNode => (
+                <Tile
+                  key={index}
+                  className={
+                    Math.floor(index / columns) % 2 === 0 ? 'even' : 'odd'
+                  }
+                  selected={item}
+                />
+              )
+            )}
+        </div>
       </div>
     </div>
   );

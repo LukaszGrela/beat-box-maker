@@ -1,7 +1,6 @@
 import React from 'react';
-import { GridChildComponentProps } from 'react-window';
 
-export interface IProps extends GridChildComponentProps {
+export interface IProps {
   selected: number;
 
   className?: string;
@@ -9,7 +8,6 @@ export interface IProps extends GridChildComponentProps {
 
 const Tile: React.FC<IProps> = ({
   selected,
-  style,
   className,
 }: IProps): JSX.Element => {
   const memoClassName = React.useMemo((): string => {
@@ -25,11 +23,7 @@ const Tile: React.FC<IProps> = ({
 
     return output;
   }, [className, selected]);
-  return (
-    <div className={memoClassName} style={style}>
-      {' '}
-    </div>
-  );
+  return <div className={memoClassName}> </div>;
 };
 
 export default Tile;
