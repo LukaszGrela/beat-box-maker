@@ -14,23 +14,25 @@ export interface IOwnProps {
 export interface IProps extends IOwnProps {
   beats: number[][];
 
-  bars?: number;
-  beatsPerBar?: number;
-  splitBeat?: number;
+  bars: number;
+  beatsPerBar: number;
+  splitBeat: number;
 
-  tileWidth?: number;
-  rowHeight?: number;
-
-  onTap: (instrument: string, x: number, y: number) => void;
+  onTap: (
+    instrument: string,
+    instrumentId: number,
+    x: number,
+    y: number
+  ) => void;
 }
 
 const Console: React.FC<IProps> = ({
   instruments,
   beats,
   onTap,
-  bars = 4,
-  beatsPerBar = 4,
-  splitBeat = 2,
+  bars,
+  beatsPerBar,
+  splitBeat,
 }: IProps): JSX.Element => {
   const columns = React.useMemo((): number => bars * beatsPerBar * splitBeat, [
     bars,
@@ -52,9 +54,11 @@ const Console: React.FC<IProps> = ({
       if (e.target instanceof HTMLElement) {
         const target = e.target as HTMLElement;
         if (target.id) {
-          const [component, instrument, x, y] = target.id.split('-');
+          const [component, instrument, x, y, instrumentId] = target.id.split(
+            '-'
+          );
           if (component === 'Tile') {
-            onTap(instrument, Number(x), Number(y));
+            onTap(instrument, Number(instrumentId), Number(x), Number(y));
           }
         }
       }
@@ -92,7 +96,7 @@ const Console: React.FC<IProps> = ({
               (item, index): React.ReactNode => {
                 const x = index % columns;
                 const y = Math.floor(index / columns);
-                const id = `Tile-${instruments[y].label}-${x}-${y}`;
+                const id = `Tile-${instruments[y].label}-${x}-${y}-${instruments[y].id}`;
                 return (
                   <Tile
                     key={id}
