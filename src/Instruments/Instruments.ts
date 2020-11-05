@@ -1,21 +1,22 @@
-import { Players } from "tone";
+import { Players } from 'tone';
 
 export interface IInstrumentData {
+  id: number;
   keyCode: number;
   label: string;
 }
 
 class Instruments {
   _instruments: IInstrumentData[] = [
-    { keyCode: 65, label: "clap" },
-    { keyCode: 83, label: "hihat" },
-    { keyCode: 68, label: "kick" },
-    { keyCode: 70, label: "openhat" },
-    { keyCode: 71, label: "boom" },
-    { keyCode: 72, label: "ride" },
-    { keyCode: 74, label: "snare" },
-    { keyCode: 75, label: "tom" },
-    { keyCode: 76, label: "tink" },
+    { id: 1, keyCode: 65, label: 'clap' },
+    { id: 2, keyCode: 83, label: 'hihat' },
+    { id: 3, keyCode: 68, label: 'kick' },
+    { id: 4, keyCode: 70, label: 'openhat' },
+    { id: 5, keyCode: 71, label: 'boom' },
+    { id: 6, keyCode: 72, label: 'ride' },
+    { id: 7, keyCode: 74, label: 'snare' },
+    { id: 8, keyCode: 75, label: 'tom' },
+    { id: 9, keyCode: 76, label: 'tink' },
   ];
   players: Players | undefined = undefined;
 
