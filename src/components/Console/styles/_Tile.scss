@@ -4,4 +4,7 @@
   &.selected {
     background-color: #f10a;
   }
+  & > * {
+    pointer-events: none;
+  }
 }
