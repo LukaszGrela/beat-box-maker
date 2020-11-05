@@ -1,4 +1,9 @@
-import { BeatsActionTypes, IBeatsAction } from './types';
+import {
+  BeatsActionTypes,
+  BeatsInitActionTypes,
+  IBeatsAction,
+  IBeatsInitAction,
+} from './types';
 
 export const setBeat = (
   instrumentId: number,
@@ -10,4 +15,13 @@ export const setBeat = (
   x,
   y,
   instrumentId,
+});
+
+export const initBeatData = (
+  columns: number,
+  rows: number
+): IBeatsInitAction => ({
+  type: BeatsInitActionTypes.INIT,
+  columns,
+  rows,
 });

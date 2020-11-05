@@ -1,10 +1,15 @@
-import { BeatsActionTypes, IBeatsAction, IBeatsReducer } from './types';
+import {
+  BeatsActionTypes,
+  TBeatsActions,
+  IBeatsReducer,
+  BeatsInitActionTypes,
+} from './types';
 
 const initialState: IBeatsReducer = {
   data: [],
 };
 
-const beats = (state = initialState, action: IBeatsAction): IBeatsReducer => {
+const beats = (state = initialState, action: TBeatsActions): IBeatsReducer => {
   switch (action.type) {
     case BeatsActionTypes.SET: {
       const newState = {
@@ -22,6 +27,15 @@ const beats = (state = initialState, action: IBeatsAction): IBeatsReducer => {
         newState.data[y][x] = instrumentId || 0;
       }
       return newState;
+    }
+
+    case BeatsInitActionTypes.INIT: {
+      return {
+        ...initialState,
+        data: [...Array(action.rows)].map(() =>
+          [...Array(action.columns)].map((i) => 0)
+        ),
+      };
     }
 
     default:
