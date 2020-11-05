@@ -1,15 +1,19 @@
 import React from 'react';
+import { useDispatch } from 'react-redux';
 import { start as toneStart, context as toneContext } from 'tone';
 import './App.css';
 import ConsoleConnected from './components/Console/ConsoleConnected';
 import { useMount } from './hooks/useMount';
 import Instruments from './Instruments/Instruments';
+import { initBeatData } from './store/beats/actions';
+import { setConfigDefaults } from './store/config/actions';
+import { TDispatch } from './store/types';
 
 const App: React.FC = (): JSX.Element => {
   const [initiated, setInitiated] = React.useState(false);
   const [loading, setLoading] = React.useState(false);
   const players = React.useRef<Instruments>(new Instruments());
-
+  const dispatch = useDispatch<TDispatch>();
   React.useEffect((): void => {
     if (initiated) {
       players.current.load((): void => {
@@ -53,6 +57,10 @@ const App: React.FC = (): JSX.Element => {
               onClick={async () => {
                 await toneStart();
                 toneContext.resume();
+                dispatch(setConfigDefaults(4, 4, 2));
+                dispatch(
+                  initBeatData(4 * 4 * 2, players.current.instruments.length)
+                );
                 setInitiated(true);
               }}
             >
