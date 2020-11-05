@@ -1,10 +1,9 @@
-import React from "react";
-import { start as toneStart, context as toneContext } from "tone";
-import "./App.css";
-import Console from "./components/Console/Console";
-import Grid from "./components/Grid/Grid";
-import { useMount } from "./hooks/useMount";
-import Instruments from "./Instruments/Instruments";
+import React from 'react';
+import { start as toneStart, context as toneContext } from 'tone';
+import './App.css';
+import ConsoleConnected from './components/Console/ConsoleConnected';
+import { useMount } from './hooks/useMount';
+import Instruments from './Instruments/Instruments';
 
 const App: React.FC = (): JSX.Element => {
   const [initiated, setInitiated] = React.useState(false);
@@ -32,12 +31,7 @@ const App: React.FC = (): JSX.Element => {
         <div className="beats">
           {loading && <p>LOADING...</p>}
           {!loading && initiated && (
-            <Console
-              instruments={players.current.instruments}
-              beats={[...Array(9)].map(() =>
-                [...Array(32)].map((i) => (Math.random() > 0.5 ? 0 : 1))
-              )}
-            />
+            <ConsoleConnected instruments={players.current.instruments} />
           )}
           {!loading && !initiated && (
             <button
