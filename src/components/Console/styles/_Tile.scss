@@ -1,4 +1,5 @@
 .Tile {
+  min-height: $rowHeight;
   border: 1px silver solid;
   &.selected {
     background-color: #f10a;
