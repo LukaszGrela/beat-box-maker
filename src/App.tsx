@@ -1,6 +1,12 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
-import { start as toneStart, context as toneContext } from 'tone';
+import {
+  start as toneStart,
+  context as toneContext,
+  Transport,
+  Draw,
+  Loop,
+} from 'tone';
 import './App.css';
 import ConsoleConnected from './components/Console/ConsoleConnected';
 import { useMount } from './hooks/useMount';
@@ -21,6 +27,17 @@ const App: React.FC = (): JSX.Element => {
       });
     }
   }, [initiated, players]);
+
+  const loop = new Loop((time) => {
+    // Draw.schedule takes a callback and a time to invoke the callback
+    Draw.schedule(() => {
+      // the callback synced to the animation frame at the given time
+      console.log('tick', time, Transport.position);
+    }, time);
+  });
+
+  loop.interval = '16n';
+  loop.start();
 
   // const downHandler = (e: KeyboardEvent): void => {  };
   // const upHandler = (e: KeyboardEvent): void => {};
@@ -43,13 +60,29 @@ const App: React.FC = (): JSX.Element => {
         <div className="beats">
           {loading && <p>LOADING...</p>}
           {!loading && initiated && (
-            <ConsoleConnected
-              instruments={players.current.instruments}
-              playInstrument={(instrument: string): void => {
-                console.log('App.playInstrument', instrument);
-                players.current.play(instrument);
-              }}
-            />
+            <>
+              <button
+                className="tap-to-start"
+                onClick={() => {
+                  if (Transport.state === 'stopped') {
+                    Transport.start('+0.1');
+                  } else {
+                    Transport.stop();
+                  }
+                }}
+              >
+                Play
+              </button>
+              <ConsoleConnected
+                instruments={players.current.instruments}
+                playInstrument={(instrument: string): void => {
+                  console.log('App.playInstrument', instrument);
+                  if (Transport.state === 'stopped') {
+                    players.current.play(instrument);
+                  }
+                }}
+              />
+            </>
           )}
           {!loading && !initiated && (
             <button
