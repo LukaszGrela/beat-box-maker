@@ -59,7 +59,13 @@ const Console: React.FC<IProps> = ({
             '-'
           );
           if (component === 'Tile') {
-            onTap(instrument, Number(instrumentId), Number(x), Number(y));
+            const selected = beats[Number(y)][Number(x)] !== 0;
+            onTap(
+              selected ? '' : instrument,
+              selected ? 0 : Number(instrumentId),
+              Number(x),
+              Number(y)
+            );
           }
         }
       }
@@ -68,7 +74,7 @@ const Console: React.FC<IProps> = ({
     return (): void => {
       window.removeEventListener('mousedown', mouseDown);
     };
-  }, [onTap]);
+  }, [onTap, beats]);
 
   return (
     <div className="Console">
