@@ -3,14 +3,14 @@ import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 
 import './index.scss';
-import App from './App';
+import BeatBoxMaker from './BeatBoxMaker/BeatBoxMaker';
 import * as serviceWorker from './serviceWorker';
 import store from './store';
 
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
-      <App />
+      <BeatBoxMaker />
     </Provider>
   </React.StrictMode>,
   document.getElementById('root')
