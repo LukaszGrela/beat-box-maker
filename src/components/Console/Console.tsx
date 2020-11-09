@@ -79,6 +79,7 @@ const Console: React.FC<IProps> = ({
   return (
     <div className="Console">
       <ul className="Console_instruments">
+        <li className="InstrumentRow">Toolbox</li>
         {instruments.map(
           (data, index): React.ReactNode => (
             <InstrumentRow
@@ -97,6 +98,16 @@ const Console: React.FC<IProps> = ({
             gridTemplateColumns,
           }}
         >
+          {arrayHasContent(beats) &&
+            arrayHasContent(instruments) &&
+            beats[0].map(
+              (_, index): React.ReactNode => {
+                const x = index % columns;
+
+                const id = `Column-${x}`;
+                return <Tile key={id} id={id} className={'odd'} selected={0} />;
+              }
+            )}
           {arrayHasContent(beats) &&
             arrayHasContent(instruments) &&
             beats
