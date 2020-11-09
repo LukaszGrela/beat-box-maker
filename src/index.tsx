@@ -2,15 +2,15 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 
-import './index.scss';
-import BeatBoxMaker from './BeatBoxMaker/BeatBoxMaker';
 import * as serviceWorker from './serviceWorker';
 import store from './store';
+import BeatBoxMakerConnected from './BeatBoxMaker/BeatBoxMakerConnected';
+import './index.scss';
 
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
-      <BeatBoxMaker />
+      <BeatBoxMakerConnected />
     </Provider>
   </React.StrictMode>,
   document.getElementById('root')
