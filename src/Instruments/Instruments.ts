@@ -35,10 +35,12 @@ class Instruments {
     );
   }
 
-  play(instrument: string): void {
+  play(instrument: string | number): void {
     const found = this._instruments.find(
-      (needle): boolean => `${needle.label}` === instrument
+      (needle): boolean =>
+        `${needle.label}` === instrument || needle.id === instrument
     );
+
     if (found) {
       if (this.players?.has(found.label)) {
         this.players?.player(found.label).start();
