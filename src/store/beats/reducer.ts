@@ -7,6 +7,7 @@ import {
 
 const initialState: IBeatsReducer = {
   data: [],
+  hasPatterns: false,
 };
 
 const beats = (state = initialState, action: TBeatsActions): IBeatsReducer => {
@@ -26,6 +27,10 @@ const beats = (state = initialState, action: TBeatsActions): IBeatsReducer => {
       ) {
         newState.data[y][x] = instrumentId || 0;
       }
+      newState.hasPatterns =
+        newState.data
+          .reduce((acc, current) => [...acc, ...current], [])
+          .filter((n) => n).length > 0;
       return newState;
     }
 

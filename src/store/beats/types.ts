@@ -20,6 +20,7 @@ export interface IBeatsInitAction extends AnyAction {
 }
 export interface IBeatsReducer {
   data: number[][];
+  hasPatterns: boolean;
 }
 
 export type TBeatsActions = IBeatsInitAction | IBeatsAction;
