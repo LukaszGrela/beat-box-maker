@@ -1,26 +1,39 @@
 import React from 'react';
-import { useDispatch, useStore } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import {
   start as toneStart,
   context as toneContext,
   Transport,
   Draw,
 } from 'tone';
+import Console from '../components/Console/Console';
 import ConsoleConnected from '../components/Console/ConsoleConnected';
 import { useMount } from '../hooks/useMount';
 import Instruments from '../Instruments/Instruments';
 import { arrayHasContent } from '../shared/types';
-import { initBeatData } from '../store/beats/actions';
+import { initBeatData, setBeat } from '../store/beats/actions';
+import { IBeatsReducer } from '../store/beats/types';
 import { setConfigDefaults } from '../store/config/actions';
-import { TDispatch, TAppState } from '../store/types';
+import { IConfigReducer } from '../store/config/types';
+import { TDispatch } from '../store/types';
+import { getPattern } from '../utils/get-pattern';
 import './styles/index.scss';
 
-const BeatBoxMaker: React.FC = (): JSX.Element => {
+export interface IProps {
+  config: IConfigReducer;
+  beats: IBeatsReducer;
+}
+
+const BeatBoxMaker: React.FC<IProps> = ({
+  config,
+  beats,
+}: IProps): JSX.Element => {
   const [initiated, setInitiated] = React.useState(false);
   const [loading, setLoading] = React.useState(false);
+  const [playing, setPlaying] = React.useState(false);
   const players = React.useRef<Instruments>(new Instruments());
   const dispatch = useDispatch<TDispatch>();
-  const store = useStore<TAppState>();
+
   React.useEffect((): void => {
     if (initiated) {
       players.current.load((): void => {
@@ -28,8 +41,6 @@ const BeatBoxMaker: React.FC = (): JSX.Element => {
       });
     }
   }, [initiated, players]);
-
-  const { config, beats } = store.getState();
 
   const { bars, beatsPerBar, splitBeat } = config;
   const { data } = beats;
@@ -51,13 +62,13 @@ const BeatBoxMaker: React.FC = (): JSX.Element => {
             // Draw.schedule takes a callback and a time to invoke the callback
             Draw.schedule(() => {
               // the callback synced to the animation frame at the given time
-              console.log(
-                'tick',
-                index,
-                time,
-                data[0][index],
-                Transport.position
-              );
+              console.log('tick', index, time, Transport.position);
+              const pattern = getPattern(data, index);
+              if (pattern.length > 0) {
+                pattern.forEach((instrument) => {
+                  players.current.play(instrument);
+                });
+              }
             }, time);
           }, `${time.bar}:${time.quarter}:${time.sixteenth}`)
         );
@@ -105,17 +116,35 @@ const BeatBoxMaker: React.FC = (): JSX.Element => {
                 onClick={() => {
                   if (Transport.state === 'stopped') {
                     Transport.start('+0.1');
+                    setPlaying(true);
                   } else {
                     Transport.stop();
+                    setPlaying(false);
                   }
                 }}
               >
-                Play
+                {playing ? 'Stop' : 'Play'}
               </button>
-              <ConsoleConnected
+              <Console
+                bars={bars}
+                beatsPerBar={bars}
+                splitBeat={splitBeat}
+                beats={data}
                 instruments={players.current.instruments}
                 playInstrument={(instrument: string): void => {
                   console.log('App.playInstrument', instrument);
+                  if (Transport.state === 'stopped') {
+                    players.current.play(instrument);
+                  }
+                }}
+                onTap={(
+                  instrument: string,
+                  instrumentId: number,
+                  x: number,
+                  y: number
+                ): void => {
+                  console.log('onTap', instrument, x, y);
+                  dispatch(setBeat(instrumentId, x, y));
                   if (Transport.state === 'stopped') {
                     players.current.play(instrument);
                   }
