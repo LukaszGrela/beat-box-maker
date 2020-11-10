@@ -7,7 +7,6 @@ import {
   Draw,
 } from 'tone';
 import Console from '../components/Console/Console';
-import ConsoleConnected from '../components/Console/ConsoleConnected';
 import { useMount } from '../hooks/useMount';
 import Instruments from '../Instruments/Instruments';
 import { arrayHasContent } from '../shared/types';
@@ -43,7 +42,7 @@ const BeatBoxMaker: React.FC<IProps> = ({
   }, [initiated, players]);
 
   const { bars, beatsPerBar, splitBeat } = config;
-  const { data } = beats;
+  const { data, hasPatterns } = beats;
   React.useEffect((): (() => void) => {
     Transport.setLoopPoints(0, `${bars}m`);
     Transport.loop = true;
@@ -112,6 +111,7 @@ const BeatBoxMaker: React.FC<IProps> = ({
           {!loading && initiated && (
             <>
               <button
+                disabled={!hasPatterns}
                 className="tap-to-play"
                 onClick={() => {
                   if (Transport.state === 'stopped') {
@@ -124,6 +124,20 @@ const BeatBoxMaker: React.FC<IProps> = ({
                 }}
               >
                 {playing ? 'Stop' : 'Play'}
+              </button>{' '}
+              <button
+                disabled={!hasPatterns}
+                className="tap-to-play"
+                onClick={() => {
+                  dispatch(
+                    initBeatData(
+                      bars * beatsPerBar * splitBeat,
+                      players.current.instruments.length
+                    )
+                  );
+                }}
+              >
+                Reset
               </button>
               <Console
                 bars={bars}
