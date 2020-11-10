@@ -30,6 +30,7 @@ const BeatBoxMaker: React.FC<IProps> = ({
   const [initiated, setInitiated] = React.useState(false);
   const [loading, setLoading] = React.useState(false);
   const [playing, setPlaying] = React.useState(false);
+  const [playedColumn, setPlayedColumn] = React.useState<number>();
   const players = React.useRef<Instruments>(new Instruments());
   const dispatch = useDispatch<TDispatch>();
 
@@ -62,6 +63,7 @@ const BeatBoxMaker: React.FC<IProps> = ({
             Draw.schedule(() => {
               // the callback synced to the animation frame at the given time
               console.log('tick', index, time, Transport.position);
+              setPlayedColumn(index);
               const pattern = getPattern(data, index);
               if (pattern.length > 0) {
                 pattern.forEach((instrument) => {
@@ -140,6 +142,7 @@ const BeatBoxMaker: React.FC<IProps> = ({
                 Reset
               </button>
               <Console
+                activeColumn={playedColumn}
                 bars={bars}
                 beatsPerBar={bars}
                 splitBeat={splitBeat}

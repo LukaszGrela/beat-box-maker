@@ -15,6 +15,8 @@ export interface IOwnProps {
 export interface IProps extends IOwnProps {
   beats: number[][];
 
+  activeColumn?: number;
+
   bars: number;
   beatsPerBar: number;
   splitBeat: number;
@@ -34,6 +36,7 @@ const Console: React.FC<IProps> = ({
   bars,
   beatsPerBar,
   splitBeat,
+  activeColumn,
 }: IProps): JSX.Element => {
   const columns = React.useMemo((): number => bars * beatsPerBar * splitBeat, [
     bars,
@@ -76,6 +79,31 @@ const Console: React.FC<IProps> = ({
     };
   }, [onTap, beats]);
 
+  const memoTiles = React.useMemo(
+    (): React.ReactNode =>
+      arrayHasContent(beats) &&
+      arrayHasContent(instruments) &&
+      beats
+        .reduce((acc, current) => [...acc, ...current], [])
+        .map(
+          (item, index): React.ReactNode => {
+            const x = index % columns;
+            const y = Math.floor(index / columns);
+
+            const id = `Tile-${instruments[y].label}-${x}-${y}-${instruments[y].id}`;
+            return (
+              <Tile
+                key={id}
+                id={id}
+                className={y % 2 === 0 ? 'even' : 'odd'}
+                selected={item}
+              />
+            );
+          }
+        ),
+    [beats, instruments, columns]
+  );
+
   return (
     <div className="Console">
       <ul className="Console_instruments">
@@ -98,6 +126,7 @@ const Console: React.FC<IProps> = ({
             gridTemplateColumns,
           }}
         >
+          {/* Headers */}
           {arrayHasContent(beats) &&
             arrayHasContent(instruments) &&
             beats[0].map(
@@ -105,29 +134,13 @@ const Console: React.FC<IProps> = ({
                 const x = index % columns;
 
                 const id = `Column-${x}`;
-                return <Tile key={id} id={id} className={'odd'} selected={0} />;
+                const className = activeColumn === x ? 'odd hilighted' : 'odd';
+                return (
+                  <Tile key={id} id={id} className={className} selected={0} />
+                );
               }
             )}
-          {arrayHasContent(beats) &&
-            arrayHasContent(instruments) &&
-            beats
-              .reduce((acc, current) => [...acc, ...current], [])
-              .map(
-                (item, index): React.ReactNode => {
-                  const x = index % columns;
-                  const y = Math.floor(index / columns);
-
-                  const id = `Tile-${instruments[y].label}-${x}-${y}-${instruments[y].id}`;
-                  return (
-                    <Tile
-                      key={id}
-                      id={id}
-                      className={y % 2 === 0 ? 'even' : 'odd'}
-                      selected={item}
-                    />
-                  );
-                }
-              )}
+          {memoTiles}
         </div>
       </div>
     </div>
