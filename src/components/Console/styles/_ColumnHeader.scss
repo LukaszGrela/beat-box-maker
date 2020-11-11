@@ -1,0 +1,13 @@
+.ColumnHeader {
+  min-height: $rowHeight;
+  border: 1px silver solid;
+
+  transition: all 0.25s ease-in;
+
+  &.hilighted {
+    background-color: rgb(255, 174, 0);
+  }
+  & > * {
+    pointer-events: none;
+  }
+}
