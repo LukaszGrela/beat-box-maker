@@ -1,6 +1,7 @@
 import React from 'react';
 import { IInstrumentData } from '../../Instruments/Instruments';
 import { arrayHasContent } from '../../shared/types';
+import ColumnHeader from './ColumnHeader';
 import InstrumentRow from './InstrumentRow';
 
 import './styles/index.scss';
@@ -134,9 +135,13 @@ const Console: React.FC<IProps> = ({
                 const x = index % columns;
 
                 const id = `Column-${x}`;
-                const className = activeColumn === x ? 'odd hilighted' : 'odd';
                 return (
-                  <Tile key={id} id={id} className={className} selected={0} />
+                  <ColumnHeader
+                    key={id}
+                    id={id}
+                    className={'odd'}
+                    selected={activeColumn === x}
+                  />
                 );
               }
             )}
