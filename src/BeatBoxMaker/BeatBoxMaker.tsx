@@ -122,6 +122,7 @@ const BeatBoxMaker: React.FC<IProps> = ({
                   } else {
                     Transport.stop();
                     setPlaying(false);
+                    setPlayedColumn(undefined);
                   }
                 }}
               >
