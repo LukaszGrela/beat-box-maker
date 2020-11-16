@@ -5,12 +5,14 @@ export interface IProps {
 
   className?: string;
   id?: string;
+  onClick?: () => void;
 }
 
 const ColumnHeader: React.FC<IProps> = ({
   selected,
   className,
   id,
+  onClick,
 }: IProps): JSX.Element => {
   const ref = React.useRef<HTMLDivElement>(null);
   const memoClassName = React.useMemo((): string => {
@@ -37,6 +39,7 @@ const ColumnHeader: React.FC<IProps> = ({
       className={memoClassName}
       // eslint-disable-next-line eqeqeq
       id={id != undefined ? `${id}` : undefined}
+      onClick={onClick}
     >
       {' '}
     </div>

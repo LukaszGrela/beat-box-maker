@@ -146,10 +146,15 @@ const BeatBoxMaker: React.FC<IProps> = ({
                 splitBeat={splitBeat}
                 beats={data}
                 instruments={players.current.instruments}
-                playInstrument={(instrument: string): void => {
-                  console.log('App.playInstrument', instrument);
+                playColumn={(columnIndex: number): void => {
+                  console.log('App.playInstrument', columnIndex);
                   if (Transport.state === 'stopped') {
-                    players.current.play(instrument);
+                    const pattern = getPattern(data, columnIndex);
+                    if (pattern.length > 0) {
+                      pattern.forEach((instrument) => {
+                        players.current.play(instrument);
+                      });
+                    }
                   }
                 }}
                 onTap={(

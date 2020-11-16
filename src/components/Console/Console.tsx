@@ -10,7 +10,7 @@ import Tile from './Tile';
 export interface IOwnProps {
   instruments: IInstrumentData[];
 
-  playInstrument: (instrument: string) => void;
+  playColumn: (columnIndex: number) => void;
 }
 
 export interface IProps extends IOwnProps {
@@ -38,6 +38,7 @@ const Console: React.FC<IProps> = ({
   beatsPerBar,
   splitBeat,
   activeColumn,
+  playColumn,
 }: IProps): JSX.Element => {
   const columns = React.useMemo((): number => bars * beatsPerBar * splitBeat, [
     bars,
@@ -141,6 +142,9 @@ const Console: React.FC<IProps> = ({
                     id={id}
                     className={'odd'}
                     selected={activeColumn === x}
+                    onClick={(): void => {
+                      playColumn(index);
+                    }}
                   />
                 );
               }
