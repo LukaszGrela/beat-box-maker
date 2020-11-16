@@ -12,6 +12,7 @@ const ColumnHeader: React.FC<IProps> = ({
   className,
   id,
 }: IProps): JSX.Element => {
+  const ref = React.useRef<HTMLDivElement>(null);
   const memoClassName = React.useMemo((): string => {
     let output = 'ColumnHeader';
 
@@ -25,9 +26,18 @@ const ColumnHeader: React.FC<IProps> = ({
 
     return output;
   }, [className, selected]);
+  React.useLayoutEffect((): void => {
+    if (selected && ref.current) {
+      ref.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [selected]);
   return (
-    // eslint-disable-next-line eqeqeq
-    <div className={memoClassName} id={id != undefined ? `${id}` : undefined}>
+    <div
+      ref={ref}
+      className={memoClassName}
+      // eslint-disable-next-line eqeqeq
+      id={id != undefined ? `${id}` : undefined}
+    >
       {' '}
     </div>
   );
