@@ -43,7 +43,7 @@ class Instruments {
 
     if (found) {
       if (this.players?.has(found.label)) {
-        this.players?.player(found.label).start();
+        this.players?.player(found.label).start(0);
       }
     }
   }
